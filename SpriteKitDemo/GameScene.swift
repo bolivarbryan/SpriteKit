@@ -30,4 +30,14 @@ class GameScene: SKScene {
         myFirstSpriteNode.addChild(blueBox)
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        if let _ = myFirstTexturedSpriteNode.action(forKey: "Rotation") {
+            myFirstTexturedSpriteNode.removeAction(forKey: "Rotation")
+        } else {
+            myFirstTexturedSpriteNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0)), withKey: "Rotation")
+        }
+
+    }
+
   }
