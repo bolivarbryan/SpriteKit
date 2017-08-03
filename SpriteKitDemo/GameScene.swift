@@ -10,32 +10,27 @@ import SpriteKit
 
 class GameScene: SKScene {
 
-    let myFirstNode = SKNode()
-    let myFirstSpriteNode = SKSpriteNode(color: GameColor.nodeColor, size: CGSize(width: 200.0, height: 200.0))
-    let myFirstTexturedSpriteNode = SKSpriteNode(imageNamed: "Spaceship")
-    let blueBox = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 100, height: 100))
+    let dogSpriteNode = SKSpriteNode(imageNamed: "Run0")
+    var dogFrames = [SKTexture]()
 
     override func didMove(to view: SKView) {
-        addChild(myFirstNode)
-        myFirstSpriteNode.position = CGPoint(x: frame.midX , y: frame.midY)
-        myFirstSpriteNode.anchorPoint = CGPoint.zero
-        addChild(myFirstSpriteNode)
+        dogSpriteNode.position = CGPoint(x: frame.midX, y: frame.midY)
+        addChild(dogSpriteNode)
 
-        myFirstSpriteNode.zPosition = 1
-        myFirstTexturedSpriteNode.size = CGSize(width: 100, height: 100)
-        myFirstSpriteNode.addChild(myFirstTexturedSpriteNode)
+        let textureAtlas = SKTextureAtlas(named: "Dog Frames")
 
-        blueBox.zPosition = 2
-        blueBox.position = CGPoint(x: myFirstSpriteNode.size.width/2, y:myFirstSpriteNode.size.width/2)
-        myFirstSpriteNode.addChild(blueBox)
+        for index in 0..<textureAtlas.textureNames.count {
+            let textureName = "Run\(index)"
+            dogFrames.append(textureAtlas.textureNamed(textureName))
+        }
+
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        if let _ = myFirstTexturedSpriteNode.action(forKey: "Rotation") {
-            myFirstTexturedSpriteNode.removeAction(forKey: "Rotation")
+        if dogSpriteNode.hasActions() {
+            dogSpriteNode.removeAllActions()
         } else {
-            myFirstTexturedSpriteNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0)), withKey: "Rotation")
+            dogSpriteNode.run(SKAction.repeatForever(SKAction.animate(with: dogFrames, timePerFrame: 0.1)))
         }
 
     }
